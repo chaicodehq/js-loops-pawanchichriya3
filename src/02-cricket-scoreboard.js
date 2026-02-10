@@ -32,4 +32,18 @@
  */
 export function cricketScoreboard(balls) {
   // Your code here
+  let obj = { totalRuns: 0, totalBalls: 0, wickets: 0, fours: 0, sixes: 0 }
+  if (!Array.isArray(balls) || balls.length === 0) return obj;
+
+  for (let i = 0; i < balls.length; i++) {
+    if (obj["wickets"] === 10) break;
+    if (balls[i] === -1) obj["wickets"]++;
+    if (balls[i] > -1) obj["totalRuns"]= obj["totalRuns"] + balls[i];
+    obj["totalBalls"]++;
+    if (balls[i] === 4) obj["fours"]++;
+    if (balls[i] === 6) obj["sixes"]++;
+  }
+  return obj;
 }
+
+
