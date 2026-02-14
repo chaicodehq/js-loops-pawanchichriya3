@@ -46,4 +46,46 @@
  */
 export function railwayReservation(passengers, trains) {
   // Your code here
+  if (!Array.isArray(passengers) || !Array.isArray(trains) || passengers.length === 0 || trains.length === 0) return [];
+  const result = [];
+  for (let passenger of passengers) {
+    let obj = {}
+    let trainFound = false;
+    for (let train of trains) {
+      if (passenger.trainNumber === train.trainNumber) {
+        if (train.seats[passenger.preferred] > 0) {
+          obj["name"] = passenger["name"];
+          obj["trainNumber"] = passenger["trainNumber"];
+          obj["class"] = passenger["preferred"];
+          obj["status"] = "confirmed";
+          train.seats[passenger["preferred"]]--;
+          trainFound = true
+          break;
+        } else if (train.seats[passenger.fallback] > 0) {
+          obj["name"] = passenger["name"];
+          obj["trainNumber"] = passenger["trainNumber"];
+          obj["class"] = passenger["fallback"];
+          obj["status"] = "confirmed";
+          train.seats[passenger["fallback"]]--;
+          trainFound = true;
+          break;
+        } else {
+          obj["name"] = passenger["name"];
+          obj["trainNumber"] = passenger["trainNumber"];
+          obj["class"] = passenger["preferred"];
+          obj["status"] = "waitlisted";
+          trainFound = true
+          break;
+        }
+      }
+    }
+    if (!trainFound) {
+      obj["name"] = passenger["name"];
+      obj["trainNumber"] = passenger["trainNumber"];
+      obj["class"] = null;
+      obj["status"] = "train_not_found";
+    }
+    result.push(obj);
+  }
+  return result;
 }
